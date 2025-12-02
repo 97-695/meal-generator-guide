@@ -47,6 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "mint-bg": "hsl(var(--mint-bg))",
+        "green-primary": "hsl(var(--green-primary))",
+        "green-card": "hsl(var(--green-card))",
+        "pink-accent": "hsl(var(--pink-accent))",
+        "blue-accent": "hsl(var(--blue-accent))",
+        "orange-accent": "hsl(var(--orange-accent))",
+        "yellow-bg": "hsl(var(--yellow-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
