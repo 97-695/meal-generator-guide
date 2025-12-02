@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_logs: {
+        Row: {
+          calories_burned: number | null
+          calories_consumed: number | null
+          created_at: string
+          id: string
+          log_date: string
+          updated_at: string
+          user_id: string
+          water_consumed: number | null
+        }
+        Insert: {
+          calories_burned?: number | null
+          calories_consumed?: number | null
+          created_at?: string
+          id?: string
+          log_date?: string
+          updated_at?: string
+          user_id: string
+          water_consumed?: number | null
+        }
+        Update: {
+          calories_burned?: number | null
+          calories_consumed?: number | null
+          created_at?: string
+          id?: string
+          log_date?: string
+          updated_at?: string
+          user_id?: string
+          water_consumed?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          activity_level: string | null
+          age: number | null
+          created_at: string
+          daily_calories: number | null
+          daily_exercise_calories: number | null
+          daily_water: number | null
+          dietary_restrictions: string | null
+          full_name: string | null
+          gender: string | null
+          goal: string | null
+          height: number | null
+          id: string
+          updated_at: string
+          weight: number | null
+        }
+        Insert: {
+          activity_level?: string | null
+          age?: number | null
+          created_at?: string
+          daily_calories?: number | null
+          daily_exercise_calories?: number | null
+          daily_water?: number | null
+          dietary_restrictions?: string | null
+          full_name?: string | null
+          gender?: string | null
+          goal?: string | null
+          height?: number | null
+          id: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Update: {
+          activity_level?: string | null
+          age?: number | null
+          created_at?: string
+          daily_calories?: number | null
+          daily_exercise_calories?: number | null
+          daily_water?: number | null
+          dietary_restrictions?: string | null
+          full_name?: string | null
+          gender?: string | null
+          goal?: string | null
+          height?: number | null
+          id?: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
