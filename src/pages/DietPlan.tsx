@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { User, Activity, Apple, Lightbulb, ChefHat, Droplets, Dumbbell, Utensils } from "lucide-react";
 
 interface DietFormData {
@@ -24,6 +26,15 @@ const DietPlan = () => {
   const protein = 189;
   const carbs = 252;
   const fat = 84;
+
+  // Estados para controle
+  const [waterConsumed, setWaterConsumed] = useState(0);
+  const [waterInput, setWaterInput] = useState("");
+  const [caloriesConsumed, setCaloriesConsumed] = useState(0);
+  const [mealType, setMealType] = useState("Café da Manhã");
+  const [foodName, setFoodName] = useState("");
+  const [foodWeight, setFoodWeight] = useState("");
+  const [caloriesPer100g, setCaloriesPer100g] = useState("");
 
   const meals = [
     {
@@ -76,34 +87,43 @@ const DietPlan = () => {
     },
   ];
 
+  const handleAddWater = () => {
+    const amount = parseInt(waterInput);
+    if (amount > 0) {
+      setWaterConsumed(prev => prev + amount);
+      setWaterInput("");
+    }
+  };
+
+  const handleAddMeal = () => {
+    const weight = parseFloat(foodWeight);
+    const calPer100 = parseFloat(caloriesPer100g);
+    
+    if (weight > 0 && calPer100 > 0) {
+      const totalCalories = (calPer100 * weight) / 100;
+      setCaloriesConsumed(prev => prev + totalCalories);
+      setFoodName("");
+      setFoodWeight("");
+      setCaloriesPer100g("");
+    }
+  };
+
   const recipes = [
-    {
-      name: "Frango Grelhado com Legumes",
-      calories: 350,
-      color: "bg-pink-accent",
-      ingredients: [
-        "200g de peito de frango",
-        "Brócolis",
-        "Cenoura",
-        "Abobrinha",
-        "Temperos naturais",
-      ],
-      method: "Tempere o frango e grelhe. Cozinhe os legumes no vapor. Sirva junto.",
-    },
-    {
-      name: "Omelete de Claras com Vegetais",
-      calories: 180,
-      color: "bg-pink-accent",
-      ingredients: ["4 claras de ovo", "Tomate", "Cebola", "Cenoura", "Sal e pimenta"],
-      method: "Bata as claras, adicione os vegetais picados. Cozinhe em fogo baixo.",
-    },
-    {
-      name: "Salmão com Batata Doce",
-      calories: 420,
-      color: "bg-pink-accent",
-      ingredients: ["150g de salmão", "200g de batata doce", "Limão", "Ervas", "Azeite"],
-      method: "Asse o salmão com limão. Cozinhe a batata doce. Regue com azeite.",
-    },
+    { name: "Frango Grelhado com Legumes", calories: 350, color: "bg-pink-accent", ingredients: ["200g de peito de frango", "Brócolis", "Cenoura", "Abobrinha", "Temperos naturais"], method: "Tempere o frango e grelhe. Cozinhe os legumes no vapor. Sirva junto." },
+    { name: "Omelete de Claras com Vegetais", calories: 180, color: "bg-pink-accent", ingredients: ["4 claras de ovo", "Tomate", "Cebola", "Cenoura", "Sal e pimenta"], method: "Bata as claras, adicione os vegetais picados. Cozinhe em fogo baixo." },
+    { name: "Salmão com Batata Doce", calories: 420, color: "bg-pink-accent", ingredients: ["150g de salmão", "200g de batata doce", "Limão", "Ervas", "Azeite"], method: "Asse o salmão com limão. Cozinhe a batata doce. Regue com azeite." },
+    { name: "Salada de Quinoa", calories: 280, color: "bg-green-primary", ingredients: ["100g quinoa", "Tomate", "Pepino", "Abacate", "Limão"], method: "Cozinhe a quinoa, misture com vegetais picados e tempere com limão." },
+    { name: "Peito de Peru com Arroz Integral", calories: 400, color: "bg-blue-accent", ingredients: ["150g peru", "100g arroz integral", "Brócolis", "Alho"], method: "Grelhe o peru, cozinhe o arroz e refogue o brócolis." },
+    { name: "Wrap de Atum", calories: 320, color: "bg-pink-accent", ingredients: ["1 tortilha integral", "1 lata atum", "Alface", "Tomate"], method: "Misture o atum com vegetais e enrole na tortilha." },
+    { name: "Bowl de Açaí Proteico", calories: 450, color: "bg-pink-accent", ingredients: ["200g açaí", "30g whey", "Banana", "Granola"], method: "Bata o açaí com whey, adicione frutas e granola." },
+    { name: "Tilápia ao Forno", calories: 260, color: "bg-blue-accent", ingredients: ["200g tilápia", "Tomate", "Cebola", "Pimentão"], method: "Tempere o peixe, adicione legumes e asse por 25min." },
+    { name: "Panqueca de Aveia", calories: 220, color: "bg-green-primary", ingredients: ["50g aveia", "2 ovos", "Banana", "Canela"], method: "Bata tudo, cozinhe em fogo baixo até dourar." },
+    { name: "Carne Moída com Abobrinha", calories: 380, color: "bg-pink-accent", ingredients: ["150g carne moída", "2 abobrinhas", "Tomate", "Cebola"], method: "Refogue a carne, adicione abobrinha ralada e temperos." },
+    { name: "Iogurte com Frutas Vermelhas", calories: 180, color: "bg-blue-accent", ingredients: ["200g iogurte grego", "Mix frutas vermelhas", "Mel", "Chia"], method: "Monte em camadas e adicione sementes de chia." },
+    { name: "Smoothie Verde", calories: 200, color: "bg-green-primary", ingredients: ["Couve", "Banana", "Maçã", "Gengibre", "Água"], method: "Bata todos os ingredientes até ficar homogêneo." },
+    { name: "Batata Doce Recheada", calories: 340, color: "bg-orange-accent", ingredients: ["1 batata doce", "100g frango desfiado", "Cottage", "Cebolinha"], method: "Asse a batata, abra e recheie com frango e cottage." },
+    { name: "Tapioca com Queijo", calories: 250, color: "bg-pink-accent", ingredients: ["50g tapioca", "50g queijo branco", "Tomate", "Orégano"], method: "Hidrate a tapioca, adicione queijo e grelhe." },
+    { name: "Sopa de Lentilha", calories: 290, color: "bg-orange-accent", ingredients: ["200g lentilha", "Cenoura", "Batata", "Cebola"], method: "Cozinhe a lentilha com legumes, tempere a gosto." },
   ];
 
   const tips = [
@@ -282,13 +302,31 @@ const DietPlan = () => {
                 <h3 className="font-semibold text-foreground">Ingestão de Água</h3>
               </div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">0 ml</span>
+                <span className="text-sm text-muted-foreground">{waterConsumed} ml</span>
                 <span className="text-sm font-semibold text-foreground">2000 ml</span>
               </div>
+              <div className="mb-3 h-2 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-blue-accent transition-all duration-300"
+                  style={{ width: `${Math.min((waterConsumed / 2000) * 100, 100)}%` }}
+                />
+              </div>
+              <div className="flex gap-2 mb-2">
+                <Input 
+                  type="number" 
+                  placeholder="ml" 
+                  value={waterInput}
+                  onChange={(e) => setWaterInput(e.target.value)}
+                  className="flex-1"
+                />
+                <Button size="sm" onClick={handleAddWater} className="bg-blue-accent hover:bg-blue-accent/90">
+                  Adicionar
+                </Button>
+              </div>
               <div className="flex gap-2">
-                <Button size="sm" className="flex-1 bg-blue-accent hover:bg-blue-accent/90">+250ml</Button>
-                <Button size="sm" className="flex-1 bg-blue-accent hover:bg-blue-accent/90">+500ml</Button>
-                <Button size="sm" className="flex-1 bg-destructive hover:bg-destructive/90">-250ml</Button>
+                <Button size="sm" onClick={() => setWaterConsumed(prev => Math.max(0, prev - 250))} variant="outline" className="flex-1">
+                  -250ml
+                </Button>
               </div>
             </div>
             <div className="border rounded-lg p-4">
@@ -312,10 +350,14 @@ const DietPlan = () => {
             <h2 className="text-xl font-bold text-foreground">Registro de Refeições</h2>
           </div>
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">Tipo de Refeição</label>
-                <select className="w-full border rounded-lg p-2 bg-card text-foreground">
+                <select 
+                  className="w-full border rounded-lg p-2 bg-card text-foreground"
+                  value={mealType}
+                  onChange={(e) => setMealType(e.target.value)}
+                >
                   <option>Café da Manhã</option>
                   <option>Almoço</option>
                   <option>Jantar</option>
@@ -324,36 +366,60 @@ const DietPlan = () => {
               </div>
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">Nome do Alimento</label>
-                <input
+                <Input
                   type="text"
                   placeholder="Ex: Frango grelhado"
-                  className="w-full border rounded-lg p-2 bg-input text-foreground"
+                  value={foodName}
+                  onChange={(e) => setFoodName(e.target.value)}
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">Calorias</label>
-                <input
+                <label className="text-sm font-medium text-foreground mb-2 block">Peso (gramas)</label>
+                <Input
                   type="number"
-                  placeholder="Ex: 350"
-                  className="w-full border rounded-lg p-2 bg-input text-foreground"
+                  placeholder="Ex: 150"
+                  value={foodWeight}
+                  onChange={(e) => setFoodWeight(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">Calorias/100g</label>
+                <Input
+                  type="number"
+                  placeholder="Ex: 165"
+                  value={caloriesPer100g}
+                  onChange={(e) => setCaloriesPer100g(e.target.value)}
                 />
               </div>
             </div>
-            <Button className="w-full bg-gradient-to-r from-orange-accent to-orange-accent/80 hover:from-orange-accent/90 hover:to-orange-accent/70">
+            <Button 
+              onClick={handleAddMeal}
+              className="w-full bg-gradient-to-r from-orange-accent to-orange-accent/80 hover:from-orange-accent/90 hover:to-orange-accent/70"
+            >
               Adicionar Refeição
             </Button>
             <div className="border-t pt-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Total Consumido</span>
-                <span className="font-semibold text-foreground">0</span>
+                <span className="font-semibold text-foreground">{Math.round(caloriesConsumed)} cal</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Meta Diária</span>
-                <span className="font-semibold text-blue-accent">{targetCalories}</span>
+                <span className="font-semibold text-blue-accent">{targetCalories} cal</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Restante</span>
-                <span className="font-semibold text-green-primary">{targetCalories}</span>
+                <span className={`font-semibold ${targetCalories - caloriesConsumed >= 0 ? 'text-green-primary' : 'text-destructive'}`}>
+                  {Math.round(targetCalories - caloriesConsumed)} cal
+                </span>
+              </div>
+              <div className="mt-3 h-2 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className={`h-full transition-all duration-300 ${
+                    caloriesConsumed > targetCalories ? 'bg-destructive' : 'bg-green-primary'
+                  }`}
+                  style={{ width: `${Math.min((caloriesConsumed / targetCalories) * 100, 100)}%` }}
+                />
               </div>
             </div>
           </div>
@@ -365,15 +431,62 @@ const DietPlan = () => {
             <Dumbbell className="w-5 h-5 text-pink-accent" />
             <h2 className="text-xl font-bold text-foreground">Exercícios Recomendados</h2>
           </div>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
               <div>
                 <h3 className="font-semibold text-foreground">Caminhada</h3>
                 <p className="text-sm text-muted-foreground">30 minutos - Baixa intensidade</p>
               </div>
-              <span className="text-sm font-bold text-green-primary bg-green-primary/10 px-3 py-1 rounded">
-                150 cal
-              </span>
+              <span className="text-sm font-bold text-green-primary bg-green-primary/10 px-3 py-1 rounded">150 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Corrida</h3>
+                <p className="text-sm text-muted-foreground">30 minutos - Alta intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">300 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Musculação</h3>
+                <p className="text-sm text-muted-foreground">45 minutos - Média intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-blue-accent bg-blue-accent/10 px-3 py-1 rounded">250 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Natação</h3>
+                <p className="text-sm text-muted-foreground">40 minutos - Média intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-green-primary bg-green-primary/10 px-3 py-1 rounded">280 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Ciclismo</h3>
+                <p className="text-sm text-muted-foreground">45 minutos - Alta intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">350 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Yoga</h3>
+                <p className="text-sm text-muted-foreground">60 minutos - Baixa intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-blue-accent bg-blue-accent/10 px-3 py-1 rounded">180 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">HIIT</h3>
+                <p className="text-sm text-muted-foreground">20 minutos - Muito alta intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">320 cal</span>
+            </div>
+            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-foreground">Dança</h3>
+                <p className="text-sm text-muted-foreground">45 minutos - Média intensidade</p>
+              </div>
+              <span className="text-sm font-bold text-orange-accent bg-orange-accent/10 px-3 py-1 rounded">270 cal</span>
             </div>
           </div>
         </Card>
