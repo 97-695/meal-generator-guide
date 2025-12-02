@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { User, Activity, Apple, Lightbulb, ChefHat, Droplets, Dumbbell, Utensils } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { User, Activity, Apple, Lightbulb, ChefHat, Droplets, Dumbbell, Utensils, Target, CheckCircle2, XCircle } from "lucide-react";
 
 interface DietFormData {
   name: string;
@@ -35,6 +36,8 @@ const DietPlan = () => {
   const [foodName, setFoodName] = useState("");
   const [foodWeight, setFoodWeight] = useState("");
   const [caloriesPer100g, setCaloriesPer100g] = useState("");
+  const [caloriesBurned, setCaloriesBurned] = useState(0);
+  const [exerciseInputs, setExerciseInputs] = useState<{ [key: string]: string }>({});
 
   const meals = [
     {
@@ -107,6 +110,32 @@ const DietPlan = () => {
       setCaloriesPer100g("");
     }
   };
+
+  const exercises = [
+    { name: "Caminhada", caloriesPerMin: 5, intensity: "Baixa intensidade", color: "green-primary" },
+    { name: "Corrida", caloriesPerMin: 10, intensity: "Alta intensidade", color: "pink-accent" },
+    { name: "Musculação", caloriesPerMin: 5.5, intensity: "Média intensidade", color: "blue-accent" },
+    { name: "Natação", caloriesPerMin: 7, intensity: "Média intensidade", color: "green-primary" },
+    { name: "Ciclismo", caloriesPerMin: 7.8, intensity: "Alta intensidade", color: "pink-accent" },
+    { name: "Yoga", caloriesPerMin: 3, intensity: "Baixa intensidade", color: "blue-accent" },
+    { name: "HIIT", caloriesPerMin: 16, intensity: "Muito alta intensidade", color: "pink-accent" },
+    { name: "Dança", caloriesPerMin: 6, intensity: "Média intensidade", color: "orange-accent" },
+  ];
+
+  const handleAddExercise = (exerciseName: string, caloriesPerMin: number) => {
+    const time = parseInt(exerciseInputs[exerciseName] || "0");
+    if (time > 0) {
+      const caloriesBurnedForExercise = time * caloriesPerMin;
+      setCaloriesBurned(prev => prev + caloriesBurnedForExercise);
+      setExerciseInputs(prev => ({ ...prev, [exerciseName]: "" }));
+    }
+  };
+
+  const waterGoal = 2000;
+  const exerciseGoal = 300; // Meta de calorias gastas
+  const waterProgress = (waterConsumed / waterGoal) * 100;
+  const calorieProgress = (caloriesConsumed / targetCalories) * 100;
+  const exerciseProgress = (caloriesBurned / exerciseGoal) * 100;
 
   const recipes = [
     { name: "Frango Grelhado com Legumes", calories: 350, color: "bg-pink-accent", ingredients: ["200g de peito de frango", "Brócolis", "Cenoura", "Abobrinha", "Temperos naturais"], method: "Tempere o frango e grelhe. Cozinhe os legumes no vapor. Sirva junto." },
@@ -427,69 +456,196 @@ const DietPlan = () => {
 
         {/* Exercises */}
         <Card className="p-6 shadow-md">
-          <div className="flex items-center gap-2 mb-4">
-            <Dumbbell className="w-5 h-5 text-pink-accent" />
-            <h2 className="text-xl font-bold text-foreground">Exercícios Recomendados</h2>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Dumbbell className="w-5 h-5 text-pink-accent" />
+              <h2 className="text-xl font-bold text-foreground">Exercícios Recomendados</h2>
+            </div>
+            <div className="text-sm">
+              <span className="text-muted-foreground">Total Queimado: </span>
+              <span className="font-bold text-pink-accent">{Math.round(caloriesBurned)} cal</span>
+            </div>
+          </div>
+          <div className="mb-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Meta de Exercícios</span>
+              <span className="font-semibold text-foreground">{exerciseGoal} cal</span>
+            </div>
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-pink-accent transition-all duration-300"
+                style={{ width: `${Math.min(exerciseProgress, 100)}%` }}
+              />
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Caminhada</h3>
-                <p className="text-sm text-muted-foreground">30 minutos - Baixa intensidade</p>
+            {exercises.map((exercise, idx) => (
+              <div key={idx} className="border rounded-lg p-4 bg-card">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-semibold text-foreground">{exercise.name}</h3>
+                    <p className="text-sm text-muted-foreground">{exercise.intensity}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      ~{exercise.caloriesPerMin} cal/min
+                    </p>
+                  </div>
+                  <span className={`text-sm font-bold text-${exercise.color} bg-${exercise.color}/10 px-3 py-1 rounded`}>
+                    {exercise.caloriesPerMin * 30} cal
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Minutos"
+                    value={exerciseInputs[exercise.name] || ""}
+                    onChange={(e) => setExerciseInputs(prev => ({ ...prev, [exercise.name]: e.target.value }))}
+                    className="flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    onClick={() => handleAddExercise(exercise.name, exercise.caloriesPerMin)}
+                    className="bg-pink-accent hover:bg-pink-accent/90"
+                  >
+                    Registrar
+                  </Button>
+                </div>
               </div>
-              <span className="text-sm font-bold text-green-primary bg-green-primary/10 px-3 py-1 rounded">150 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Corrida</h3>
-                <p className="text-sm text-muted-foreground">30 minutos - Alta intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">300 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Musculação</h3>
-                <p className="text-sm text-muted-foreground">45 minutos - Média intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-blue-accent bg-blue-accent/10 px-3 py-1 rounded">250 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Natação</h3>
-                <p className="text-sm text-muted-foreground">40 minutos - Média intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-green-primary bg-green-primary/10 px-3 py-1 rounded">280 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Ciclismo</h3>
-                <p className="text-sm text-muted-foreground">45 minutos - Alta intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">350 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Yoga</h3>
-                <p className="text-sm text-muted-foreground">60 minutos - Baixa intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-blue-accent bg-blue-accent/10 px-3 py-1 rounded">180 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">HIIT</h3>
-                <p className="text-sm text-muted-foreground">20 minutos - Muito alta intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-pink-accent bg-pink-accent/10 px-3 py-1 rounded">320 cal</span>
-            </div>
-            <div className="border rounded-lg p-4 bg-card flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-foreground">Dança</h3>
-                <p className="text-sm text-muted-foreground">45 minutos - Média intensidade</p>
-              </div>
-              <span className="text-sm font-bold text-orange-accent bg-orange-accent/10 px-3 py-1 rounded">270 cal</span>
-            </div>
+            ))}
           </div>
         </Card>
+
+        {/* Results Button */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full h-14 text-lg font-bold bg-gradient-to-r from-green-primary to-blue-accent hover:from-green-primary/90 hover:to-blue-accent/90 shadow-lg">
+              <Target className="w-5 h-5 mr-2" />
+              Ver Resultados do Dia
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold text-center">Resumo dos Objetivos Diários</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6 py-4">
+              {/* Water Goal */}
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Droplets className="w-5 h-5 text-blue-accent" />
+                    <h3 className="font-semibold text-foreground">Ingestão de Água</h3>
+                  </div>
+                  {waterConsumed >= waterGoal ? (
+                    <CheckCircle2 className="w-6 h-6 text-green-primary" />
+                  ) : (
+                    <XCircle className="w-6 h-6 text-destructive" />
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Progresso</span>
+                    <span className="font-semibold">{waterConsumed}ml / {waterGoal}ml</span>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-300 ${waterConsumed >= waterGoal ? 'bg-green-primary' : 'bg-blue-accent'}`}
+                      style={{ width: `${Math.min(waterProgress, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {waterConsumed >= waterGoal ? '✓ Objetivo atingido!' : `Faltam ${waterGoal - waterConsumed}ml`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Calories Goal */}
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Apple className="w-5 h-5 text-green-primary" />
+                    <h3 className="font-semibold text-foreground">Calorias Consumidas</h3>
+                  </div>
+                  {caloriesConsumed >= targetCalories * 0.9 && caloriesConsumed <= targetCalories * 1.1 ? (
+                    <CheckCircle2 className="w-6 h-6 text-green-primary" />
+                  ) : (
+                    <XCircle className="w-6 h-6 text-destructive" />
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Progresso</span>
+                    <span className="font-semibold">{Math.round(caloriesConsumed)} / {targetCalories} cal</span>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-300 ${
+                        caloriesConsumed > targetCalories ? 'bg-destructive' : 'bg-green-primary'
+                      }`}
+                      style={{ width: `${Math.min(calorieProgress, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {caloriesConsumed >= targetCalories * 0.9 && caloriesConsumed <= targetCalories * 1.1
+                      ? '✓ Dentro da meta ideal!'
+                      : caloriesConsumed < targetCalories
+                      ? `Faltam ${Math.round(targetCalories - caloriesConsumed)} calorias`
+                      : `${Math.round(caloriesConsumed - targetCalories)} calorias acima da meta`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Exercise Goal */}
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Dumbbell className="w-5 h-5 text-pink-accent" />
+                    <h3 className="font-semibold text-foreground">Calorias Queimadas</h3>
+                  </div>
+                  {caloriesBurned >= exerciseGoal ? (
+                    <CheckCircle2 className="w-6 h-6 text-green-primary" />
+                  ) : (
+                    <XCircle className="w-6 h-6 text-destructive" />
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Progresso</span>
+                    <span className="font-semibold">{Math.round(caloriesBurned)} / {exerciseGoal} cal</span>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-300 ${caloriesBurned >= exerciseGoal ? 'bg-green-primary' : 'bg-pink-accent'}`}
+                      style={{ width: `${Math.min(exerciseProgress, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {caloriesBurned >= exerciseGoal ? '✓ Meta de exercícios atingida!' : `Faltam ${Math.round(exerciseGoal - caloriesBurned)} calorias`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Overall Summary */}
+              <div className="border-t pt-4">
+                <div className="bg-gradient-to-r from-green-primary/10 to-blue-accent/10 rounded-lg p-4 text-center">
+                  <p className="text-lg font-bold text-foreground mb-1">
+                    {waterConsumed >= waterGoal && 
+                     caloriesConsumed >= targetCalories * 0.9 && 
+                     caloriesConsumed <= targetCalories * 1.1 && 
+                     caloriesBurned >= exerciseGoal
+                      ? '🎉 Parabéns! Todos os objetivos alcançados!'
+                      : '💪 Continue se esforçando!'}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {[
+                      waterConsumed >= waterGoal,
+                      caloriesConsumed >= targetCalories * 0.9 && caloriesConsumed <= targetCalories * 1.1,
+                      caloriesBurned >= exerciseGoal
+                    ].filter(Boolean).length} de 3 objetivos atingidos
+                  </p>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
