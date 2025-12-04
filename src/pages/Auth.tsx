@@ -16,6 +16,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [specialKey, setSpecialKey] = useState("");
 
   useEffect(() => {
     // Check if user is already logged in
@@ -28,6 +29,17 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const VALID_KEY = "K3L8356N45NER34";
+    if (specialKey !== VALID_KEY) {
+      toast({
+        title: "Chave inválida",
+        description: "A chave de acesso informada não é válida.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -45,7 +57,6 @@ const Auth = () => {
       if (error) throw error;
 
       if (data.user) {
-        // Create profile entry
         const { error: profileError } = await supabase
           .from("profiles")
           .insert({
@@ -60,10 +71,10 @@ const Auth = () => {
           description: "Você já pode fazer login.",
         });
 
-        // Clear form
         setEmail("");
         setPassword("");
         setFullName("");
+        setSpecialKey("");
       }
     } catch (error: any) {
       toast({
@@ -153,6 +164,17 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signup-key">Chave de Acesso</Label>
+                  <Input
+                    id="signup-key"
+                    type="text"
+                    placeholder="Digite a chave de acesso"
+                    value={specialKey}
+                    onChange={(e) => setSpecialKey(e.target.value)}
+                    required
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nome Completo</Label>
                   <Input
