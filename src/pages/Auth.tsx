@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Leaf, Sparkles, Heart, Key, Mail, Lock, User } from "lucide-react";
+import { Loader2, Leaf, Sparkles, Heart, Key, Mail, Lock, User, Apple, Salad, Dumbbell, Droplets } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -115,171 +114,253 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-primary/10 via-background to-pink-accent/10 p-4 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-72 h-72 bg-green-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-pink-accent/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/4 right-1/4 w-48 h-48 bg-blue-accent/10 rounded-full blur-2xl" />
-        <div className="absolute bottom-1/3 left-1/4 w-32 h-32 bg-orange-accent/15 rounded-full blur-2xl" />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-green-primary/5 via-background to-pink-accent/5">
+      {/* Animated background mesh */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-[800px] h-[800px] -top-[400px] -left-[200px] bg-gradient-to-br from-green-primary/30 to-green-card/20 rounded-full blur-3xl pulse-glow" />
+        <div className="absolute w-[600px] h-[600px] -bottom-[300px] -right-[200px] bg-gradient-to-br from-pink-accent/25 to-orange-accent/15 rounded-full blur-3xl pulse-glow" style={{ animationDelay: "2s" }} />
+        <div className="absolute w-[500px] h-[500px] top-1/4 right-1/4 bg-gradient-to-br from-blue-accent/15 to-green-primary/10 rounded-full blur-3xl pulse-glow" style={{ animationDelay: "4s" }} />
       </div>
 
-      {/* Floating icons */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <Leaf className="absolute top-20 left-[15%] w-8 h-8 text-green-primary/30 animate-bounce" style={{ animationDelay: "0s", animationDuration: "3s" }} />
-        <Heart className="absolute top-32 right-[20%] w-6 h-6 text-pink-accent/30 animate-bounce" style={{ animationDelay: "0.5s", animationDuration: "4s" }} />
-        <Sparkles className="absolute bottom-40 left-[25%] w-7 h-7 text-orange-accent/30 animate-bounce" style={{ animationDelay: "1s", animationDuration: "3.5s" }} />
-        <Leaf className="absolute bottom-28 right-[15%] w-6 h-6 text-green-primary/25 animate-bounce" style={{ animationDelay: "1.5s", animationDuration: "4.5s" }} />
-      </div>
+      {/* Decorative grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(160_65%_45%/0.03)_1px,transparent_1px),linear-gradient(to_bottom,hsl(160_65%_45%/0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <Card className="w-full max-w-md relative z-10 shadow-2xl border-0 bg-card/95 backdrop-blur-sm">
-        <CardHeader className="text-center pb-2">
-          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-green-primary to-green-card rounded-2xl flex items-center justify-center shadow-lg">
-            <Leaf className="w-8 h-8 text-primary-foreground" />
+      {/* Floating decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[10%] left-[10%] float-animation">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-primary/20 to-green-card/30 backdrop-blur-sm flex items-center justify-center shadow-glow-green">
+            <Apple className="w-8 h-8 text-green-primary" />
           </div>
-          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-primary to-green-card bg-clip-text text-transparent">
-            Calculadora de Dieta
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Sua jornada para uma vida mais saudável começa aqui
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-4">
-          <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary/50">
-              <TabsTrigger 
-                value="signin" 
-                className="data-[state=active]:bg-green-primary data-[state=active]:text-primary-foreground transition-all duration-300"
-              >
-                Entrar
-              </TabsTrigger>
-              <TabsTrigger 
-                value="signup"
-                className="data-[state=active]:bg-green-primary data-[state=active]:text-primary-foreground transition-all duration-300"
-              >
-                Criar Conta
-              </TabsTrigger>
-            </TabsList>
+        </div>
+        <div className="absolute top-[20%] right-[15%] float-animation-delayed">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-accent/20 to-orange-accent/30 backdrop-blur-sm flex items-center justify-center shadow-glow-pink">
+            <Heart className="w-7 h-7 text-pink-accent" />
+          </div>
+        </div>
+        <div className="absolute bottom-[25%] left-[8%] float-animation-slow">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-accent/20 to-green-primary/30 backdrop-blur-sm flex items-center justify-center shadow-glow-blue">
+            <Droplets className="w-6 h-6 text-blue-accent" />
+          </div>
+        </div>
+        <div className="absolute bottom-[15%] right-[10%] float-animation">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-accent/20 to-yellow-bg/50 backdrop-blur-sm flex items-center justify-center">
+            <Dumbbell className="w-7 h-7 text-orange-accent" />
+          </div>
+        </div>
+        <div className="absolute top-[45%] left-[5%] float-animation-delayed">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-card/20 to-green-primary/30 backdrop-blur-sm flex items-center justify-center">
+            <Salad className="w-5 h-5 text-green-card" />
+          </div>
+        </div>
+        <div className="absolute top-[60%] right-[8%] float-animation-slow">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-accent/15 to-blue-accent/20 backdrop-blur-sm flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-pink-accent" />
+          </div>
+        </div>
+      </div>
 
-            <TabsContent value="signin" className="space-y-4">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email" className="text-foreground font-medium">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signin-email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-10 border-border/50 focus:border-green-primary focus:ring-green-primary/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password" className="text-foreground font-medium">Senha</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signin-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pl-10 border-border/50 focus:border-green-primary focus:ring-green-primary/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-green-primary to-green-card hover:from-green-card hover:to-green-primary text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" 
-                  disabled={loading}
+      {/* Main card */}
+      <div className="w-full max-w-md relative z-10 animate-scale-in">
+        {/* Glow effect behind card */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-green-primary via-blue-accent to-pink-accent rounded-3xl blur-xl opacity-20" />
+        
+        <div className="relative glass-strong rounded-3xl shadow-elevated overflow-hidden">
+          {/* Card header with gradient */}
+          <div className="relative px-8 pt-10 pb-6 text-center">
+            {/* Decorative circles */}
+            <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-green-primary/10 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-pink-accent/10 to-transparent rounded-full translate-x-1/2 -translate-y-1/2" />
+            
+            {/* Logo */}
+            <div className="relative mx-auto mb-6 w-20 h-20">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-primary to-green-card rounded-2xl rotate-6 opacity-50" />
+              <div className="relative w-full h-full bg-gradient-to-br from-green-primary to-green-card rounded-2xl flex items-center justify-center shadow-glow-green">
+                <Leaf className="w-10 h-10 text-primary-foreground" />
+              </div>
+            </div>
+
+            <h1 className="font-display text-3xl font-bold mb-2 gradient-text">
+              NutriPlan IA
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Sua jornada para uma vida mais saudável começa aqui
+            </p>
+          </div>
+
+          {/* Form content */}
+          <div className="px-8 pb-8">
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6 p-1 bg-secondary/50 rounded-xl h-12">
+                <TabsTrigger 
+                  value="signin" 
+                  className="rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-primary data-[state=active]:to-green-card data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
                 >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Entrar
-                </Button>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="signup" className="space-y-4">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-key" className="text-foreground font-medium">Chave de Acesso</Label>
-                  <div className="relative">
-                    <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signup-key"
-                      type="text"
-                      placeholder="Digite a chave de acesso"
-                      value={specialKey}
-                      onChange={(e) => setSpecialKey(e.target.value)}
-                      required
-                      className="pl-10 border-border/50 focus:border-orange-accent focus:ring-orange-accent/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-name" className="text-foreground font-medium">Nome Completo</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      placeholder="Seu nome"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      className="pl-10 border-border/50 focus:border-green-primary focus:ring-green-primary/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email" className="text-foreground font-medium">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-10 border-border/50 focus:border-green-primary focus:ring-green-primary/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password" className="text-foreground font-medium">Senha</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={6}
-                      className="pl-10 border-border/50 focus:border-green-primary focus:ring-green-primary/20 transition-all"
-                    />
-                  </div>
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-green-primary to-green-card hover:from-green-card hover:to-green-primary text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" 
-                  disabled={loading}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="signup"
+                  className="rounded-lg font-medium transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-primary data-[state=active]:to-green-card data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
                 >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Criar Conta
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="signin" className="space-y-4 animate-fade-in">
+                <form onSubmit={handleSignIn} className="space-y-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email" className="text-foreground font-medium text-sm">Email</Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-green-primary to-blue-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-green-primary transition-colors" />
+                        <Input
+                          id="signin-email"
+                          type="email"
+                          placeholder="seu@email.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-green-primary focus:ring-2 focus:ring-green-primary/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password" className="text-foreground font-medium text-sm">Senha</Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-green-primary to-blue-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-green-primary transition-colors" />
+                        <Input
+                          id="signin-password"
+                          type="password"
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-green-primary focus:ring-2 focus:ring-green-primary/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 bg-gradient-to-r from-green-primary to-green-card hover:from-green-card hover:to-green-primary text-primary-foreground font-semibold rounded-xl shadow-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" 
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                      <Sparkles className="mr-2 h-5 w-5" />
+                    )}
+                    Entrar
+                  </Button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup" className="space-y-4 animate-fade-in">
+                <form onSubmit={handleSignUp} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-key" className="text-foreground font-medium text-sm flex items-center gap-2">
+                      <Key className="w-3.5 h-3.5 text-orange-accent" />
+                      Chave de Acesso
+                    </Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-accent to-pink-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-orange-accent transition-colors" />
+                        <Input
+                          id="signup-key"
+                          type="text"
+                          placeholder="Digite a chave especial"
+                          value={specialKey}
+                          onChange={(e) => setSpecialKey(e.target.value)}
+                          required
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-orange-accent focus:ring-2 focus:ring-orange-accent/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-name" className="text-foreground font-medium text-sm">Nome Completo</Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-green-primary to-blue-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-green-primary transition-colors" />
+                        <Input
+                          id="signup-name"
+                          type="text"
+                          placeholder="Seu nome completo"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          required
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-green-primary focus:ring-2 focus:ring-green-primary/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-email" className="text-foreground font-medium text-sm">Email</Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-green-primary to-blue-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-green-primary transition-colors" />
+                        <Input
+                          id="signup-email"
+                          type="email"
+                          placeholder="seu@email.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-green-primary focus:ring-2 focus:ring-green-primary/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password" className="text-foreground font-medium text-sm">Senha</Label>
+                    <div className="relative group">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-green-primary to-blue-accent rounded-xl opacity-0 group-focus-within:opacity-30 blur transition-all duration-300" />
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-green-primary transition-colors" />
+                        <Input
+                          id="signup-password"
+                          type="password"
+                          placeholder="Mínimo 6 caracteres"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          minLength={6}
+                          className="pl-11 h-12 bg-secondary/30 border-border/50 rounded-xl focus:border-green-primary focus:ring-2 focus:ring-green-primary/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 bg-gradient-to-r from-green-primary to-green-card hover:from-green-card hover:to-green-primary text-primary-foreground font-semibold rounded-xl shadow-lg hover:shadow-glow-green transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" 
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                      <Leaf className="mr-2 h-5 w-5" />
+                    )}
+                    Criar Minha Conta
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          {/* Footer */}
+          <div className="px-8 pb-6 pt-2 border-t border-border/30">
+            <p className="text-center text-xs text-muted-foreground">
+              Desenvolvido com 💚 para sua saúde
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
